@@ -24,11 +24,28 @@ router.get('/tweets/:id', function(req, res) {
 router.get('/users/:name', function(req, res) {
   var name = req.params.name;
   client.query(allTweets + ' WHERE $1 = users.name', [name], function(err, result) {
-      if (err) res.render('error', { error: err });
+      if (err) return err;
       var list = result.rows;
       res.render('index', { tweets: list, showForm: true });
   });
 });
+
+// router.post('/tweets', function(req, res) {
+//   var name = req.body.name;
+//   var text = req.body.text;
+//   console.log(name, text);
+//   client.query('INSERT INTO users(name) VALUES $1', [name], function(err, result) {
+//     if (err) return err;
+
+//     client.query('INSERT INTO tweets(content) VALUES $1', [text], function(err, result) {
+//       if (err) return err;
+//       console.log(result.rows);
+//       var list = result.rows;
+//       res.render('index', { tweets: list, showForm: true });
+//     });
+//   });
+//   res.redirect('/');
+// });
 
 module.exports = router;
 
