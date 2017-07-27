@@ -2,21 +2,35 @@ const express = require('express');
 const router = express.Router();
 const client = require('../db');
 
-client.query('SELECT * FROM tweets INNER JOIN users ON user_id = users.id', function (err, result) {
-  if (err) return err;
-  var tweets = result.rows;
-  router.get('/', function(req, res) {
-    res.render('index', {
-      title: 'Twitter.js',
-      tweets: tweets,
-      showForm: true
-    });
+var allTweets = 'SELECT * FROM users INNER JOIN tweets ON user_id = users.id';
+
+router.get('/', function(req, res) {
+  client.query(allTweets, function (err, result) {
+    if (err) return err;
+    var tweets = result.rows;
+    res.render('index', { title: 'Twitter.js', tweets, showForm: true });
+  });
+});
+
+router.get('/tweets/:id', function(req, res) {
+  var id = req.params.id;
+  client.query(allTweets + ' WHERE $1 = tweets.id', [id] , function(err, result) {
+      if (err) return err;
+      var list = result.rows;
+      res.render('index', { tweets: list });
+  });
+});
+
+router.get('/users/:name', function(req, res) {
+  var name = req.params.name;
+  client.query(allTweets + ' WHERE $1 = users.name', [name], function(err, result) {
+      if (err) res.render('error', { error: err });
+      var list = result.rows;
+      res.render('index', { tweets: list, showForm: true });
   });
 });
 
 module.exports = router;
-
-
 
 
 
@@ -45,5 +59,3 @@ module.exports = router;
 //   tweetBank.add(name, text);
 //   res.redirect('/');
 // });
-
-

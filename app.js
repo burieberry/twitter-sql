@@ -27,9 +27,12 @@ app.use('/', function(req, res, next) {
 // route to homepage
 app.use('/', routes);
 
-// Fallback for all page requests
+app.use(function(err, req, res, next) {
+  res.render('error', { error: err });
+});
+
 app.use(function(req, res, next) {
-  res.status(404).send('You idiot. This page does not exist.');
+  res.render('error');
 });
 
 // listen for requests on port
