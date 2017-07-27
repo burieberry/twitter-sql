@@ -5,7 +5,7 @@ const path = require('path');
 const chalk = require('chalk'); // color the console output
 const nunjucks = require('nunjucks'); // templating engine
 const routes = require('./routes');
-const port = 3000 || process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.set('view engine', 'html'); // have res.render work with html files
 app.engine('html', nunjucks.render); // use nunjucks to give html files to res.render
