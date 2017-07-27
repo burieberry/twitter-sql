@@ -1,6 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db/index.js');
+const client = require('../db');
+
+client.query('SELECT * FROM tweets INNER JOIN users ON user_id = users.id', function (err, result) {
+  if (err) return err;
+  var tweets = result.rows;
+  router.get('/', function(req, res) {
+    res.render('index', {
+      title: 'Twitter.js',
+      tweets: tweets,
+      showForm: true
+    });
+  });
+});
+
+module.exports = router;
+
+
+
+
+
 // const tweetBank = require('../tweetBank');
 
 // router.get('/tweets/:id', function(req, res) {
@@ -27,4 +46,4 @@ const db = require('../db/index.js');
 //   res.redirect('/');
 // });
 
-module.exports = router;
+
