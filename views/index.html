@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <header class="page-header">
+    <h1>Twitter.JS</h1>
+  </header>
+  <div class="row">
+    <div class="col-md-3">
+      <img src="https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/11049497_10153724213425839_8952733651272417395_n.jpg?oh=3063c0e6d229cfe650162b59bd821040&oe=59FD2BE3" width="150">
+      <h3>Burcu Noyan</h3>
+      <p><em>1,000 followers</em></p>
+    </div>
+
+  <section class="col-md-9 tweetbox">
+    <!-- form for tweets -->
+      {% if showForm %}
+      <form action="/tweets" method="POST" class="well">
+        <label for="name_field">Name:</label>
+        <input name="name" type="text" id="name_field" value="{{ tweets[0].name }}" />
+        <label for="text_field">Text:</label>
+        <input name="text" type="text" id="text_field" style="width: 350px;" autofocus />
+        <input type="submit" value="Submit" class="btn btn-primary" />
+      </form>
+      {% endif %}
+
+    <!-- display tweets here -->
+    <ul class="list-group">
+      {% for tweet in tweets %}
+        <li class="list-group-item">
+          <img>
+          <h4 class="content"><a href="/users/{{ tweet.name }}">{{ tweet.name }}</a></h4>
+          <p class="content"><a href="/tweets/{{ tweet.id }}"><span id="tweet-text">{{ tweet.content }}</span></a></p>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  </section>
+
+{% endblock %}

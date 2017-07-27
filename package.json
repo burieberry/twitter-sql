@@ -1,0 +1,21 @@
+{
+  "name": "twitter",
+  "version": "1.0.0",
+  "description": "twitter clone app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "chalk": "^2.0.1",
+    "express": "^4.15.3",
+    "lodash": "^4.17.4",
+    "nodemon": "^1.11.0",
+    "nunjucks": "^3.0.1",
+    "path": "^0.12.7"
+  }
+}
