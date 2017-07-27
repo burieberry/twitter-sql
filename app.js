@@ -39,7 +39,7 @@ app.use('/', function(req, res, next) {
 
 // Fallback for all page requests
 app.use(function(req, res, next) {
-  res.send('You idiot. This page does not exist.');
+  res.status(404).send('You idiot. This page does not exist.');
 });
 
 
