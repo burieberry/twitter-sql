@@ -1,9 +1,10 @@
+'use strict';
 const _ = require('lodash'); // utilities library
 var data = [];
 
 function add(name, content) {
   function idGen() {
-    return Math.floor(Math.random() * 10000).toString();
+    return Math.floor(Math.random() * 10000);
   }
 
   data.push({ name: name, content: content, id: idGen()});

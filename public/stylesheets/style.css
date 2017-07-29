@@ -58,6 +58,7 @@ code {
   float: left;
   height: 50px;
   width: 50px;
+  content:url("http://lorempixel.com/50/50/");
 }
 .content {
   margin-left: 60px;

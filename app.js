@@ -1,41 +1,43 @@
+'use strict';
 const express = require('express');
 const bodyParser = require('body-parser');
-const app = express();
 const path = require('path');
-const chalk = require('chalk');
-const nunjucks = require('nunjucks');
+const chalk = require('chalk'); // color the console output
 const routes = require('./routes');
-const port = process.env.PORT || 3000;
+const nunjucks = require('nunjucks'); // templating engine
 
-app.set('view engine', 'html');
-app.engine('html', nunjucks.render);
-nunjucks.configure('views', { noCache: true });
+const app = express(); // store application instance in an app variable
+
+// Nunjucks templating setup
+app.set('view engine', 'html'); // have res.render work with html files
+app.engine('html', nunjucks.render); // give html files to res.render
+nunjucks.configure('views', { noCache: true }); // point nunjucks to views dir
 
 app.use('/', express.static(path.join(__dirname, '/public')));
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+// Body parsing middleware
+app.use(bodyParser.urlencoded({ extended: false })); // for HTML form submits
+app.use(bodyParser.json()); // for AJAX requests
 
 // Log requests, url, status code
-app.use('/', function(req, res, next) {
+app.use(function(req, res, next) {
   res.on('finish', function() {
-    console.log(chalk.blue(req.method), req.url, chalk.red(res.statusCode));
+    console.log(chalk.blue(req.method), chalk.gray(req.url), chalk.yellow(res.statusCode));
   });
   next();
 });
 
-// route to homepage
+// Route to homepage
 app.use('/', routes);
 
-app.use(function(err, req, res, next) {
-  res.render('error', { error: err });
-});
-
+// Fallback for all page requests
 app.use(function(req, res, next) {
-  res.render('error');
+  res.status(404).send('You idiot. This page does not exist.');
 });
 
-// listen for requests on port
+// Start the server
+const port = 3000 || process.env.PORT;
+
 app.listen(port, function() {
   console.log(chalk.magenta(`Listening intently on port ${port}`));
 });
