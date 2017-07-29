@@ -5,8 +5,11 @@ const tweetBank = require('../tweetBank');
 
 // function to get all tweets
 function allTweets(req, res, next) {
-  let tweets = tweetBank.list();
-  res.render('index', { title: 'Twitter JS', tweets, showForm: true });
+  tweetBank.list(function(err, result) {
+    if (err) next(err);
+    var tweets = result.rows;
+    res.render('index', { title: 'Twitter JS', tweets, showForm: true });
+  });
 }
 
 router.get('/', allTweets);

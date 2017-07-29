@@ -27,7 +27,7 @@
     <ul class="list-group">
       {% for tweet in tweets %}
         <li class="list-group-item">
-          <img>
+          <img src="{{ tweet.picture_url }}">
           <h4 class="content"><a href="/users/{{ tweet.name }}">{{ tweet.name }}</a></h4>
           <p class="content"><a href="/tweets/{{ tweet.id }}"><span id="tweet-text">{{ tweet.content }}</span></a></p>
         </li>

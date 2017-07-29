@@ -37,7 +37,11 @@ app.use(function(req, res, next) {
 
 // Start the server
 const port = 3000 || process.env.PORT;
+const tweetbank = require('./tweetbank');
 
 app.listen(port, function() {
   console.log(chalk.magenta(`Listening intently on port ${port}`));
+  // tweetbank.sync(function(err) {
+  //   if (err) return console.log(err);
+  // });
 });

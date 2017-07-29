@@ -1,14 +1,10 @@
 var sql = `
 
-DROP TABLE IF EXISTS users;
-
 CREATE TABLE users(
   id SERIAL PRIMARY KEY,
   name CHARACTER VARYING(255),
   picture_url CHARACTER VARYING(255)
 );
-
-DROP TABLE IF EXISTS tweets;
 
 CREATE TABLE tweets(
   id SERIAL PRIMARY KEY,
