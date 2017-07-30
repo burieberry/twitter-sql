@@ -7,8 +7,7 @@ const tweetBank = require('../tweetBank');
 function allTweets(req, res, next) {
   tweetBank.list(function(err, result) {
     if (err) next(err);
-    var tweets = result.rows;
-    res.render('index', { title: 'Twitter JS', tweets, showForm: true });
+    res.render('index', { title: 'Twitter JS', tweets: result, showForm: true });
   });
 }
 
@@ -17,14 +16,18 @@ router.get('/tweets', allTweets);
 
 router.get('/users/:name', function(req, res, next) {
   var name = req.params.name;
-  var tweets = tweetBank.find({'name': name});
-  res.render('index', { tweets, username: name, showForm: true});
+  var tweets = tweetBank.find({'name': name}, function(err, result) {
+    if (err) next(err);
+    res.render('index', { tweets: result, username: name, showForm: true});
+  });
 });
 
 router.get('/tweets/:id', function(req, res, next) {
   var id = req.params.id * 1;
-  var tweets = tweetBank.find({'id': id});
-  res.render('index', { tweets });
+  var tweets = tweetBank.find({'id': id}, function(err, result) {
+    if (err) next(err);
+    res.render('index', { tweets: result });
+  });
 });
 
 router.post('/tweets', function(req, res, next) {
