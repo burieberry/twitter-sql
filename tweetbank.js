@@ -23,8 +23,10 @@ function findUserId(name, cb) {
 
   client.query(sql, [name], function(err, result) {
     if (err) cb(err);
+
+    // create user if doesn't exist
     if (!result.rows.length) {
-      client.query('INSERT INTO users(name) VALUES ($1) RETURNING id', [ name ], function(err ,result) {
+      client.query('INSERT INTO users(name, picture_url) VALUES ($1, $2) RETURNING id', [ name, "http://lorempixel.com/50/50/" ], function(err ,result) {
         if (err) return cb(err);
         cb(null, result.rows[0].id);
       });
