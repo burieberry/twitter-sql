@@ -33,8 +33,10 @@ router.get('/tweets/:id', function(req, res, next) {
 router.post('/tweets', function(req, res, next) {
   var name = req.body.name;
   var text = req.body.text;
-  tweetBank.add(name, text);
-  res.redirect('/');
+  tweetBank.add(name, text, function(err, result) {
+    if (err) next(err);
+    res.redirect('/');
+  });
 });
 
 module.exports = router;

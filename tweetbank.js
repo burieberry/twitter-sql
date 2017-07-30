@@ -14,8 +14,45 @@ client.connect(function(err) {
 //   });
 // }
 
-function add(name, content, cb) {
+function findUserId(name, cb) {
+  var sql = `
+    SELECT id
+    FROM users
+    WHERE name = $1
+  `;
 
+  client.query(sql, [name], function(err, result) {
+    if (err) cb(err);
+    if (!result.rows.length) {
+      client.query('INSERT INTO users(name) VALUES ($1) RETURNING id', [ name ], function(err ,result) {
+        if (err) return cb(err);
+        cb(null, result.rows[0].id);
+      });
+    }
+    else {
+      cb(null, result.rows[0].id);
+    }
+  });
+}
+
+
+function add(name, content, cb) {
+  findUserId(name, function(err, result) {
+    if (err) cb(err);
+
+    var userId = result;
+
+    var sql = `
+      INSERT INTO tweets (user_id, content)
+      VALUES ($1, $2)
+      RETURNING id
+    `;
+
+    client.query(sql, [ userId, content ], function(err, result) {
+      if (err) return cb(err);
+      cb(null, { id: result.rows[0].id, content, name });
+    });
+  });
 }
 
 function list(cb) {
@@ -50,7 +87,7 @@ function find(properties, cb) {
 
   var prop = properties.name || properties.id;
 
-  client.query(sql, [prop], function(err, result) {
+  client.query(sql, [ prop ], function(err, result) {
     if (err) return cb(err);
     cb(null, result.rows);
   });
