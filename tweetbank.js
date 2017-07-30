@@ -26,7 +26,8 @@ function findUserId(name, cb) {
 
     // create user if doesn't exist
     if (!result.rows.length) {
-      client.query('INSERT INTO users(name, picture_url) VALUES ($1, $2) RETURNING id', [ name, "http://lorempixel.com/50/50/" ], function(err ,result) {
+
+      client.query('INSERT INTO users(name, picture_url) VALUES ($1, $2) RETURNING id', [ name, "https://avatars0.githubusercontent.com/u/1026488" ], function(err ,result) {
         if (err) return cb(err);
         cb(null, result.rows[0].id);
       });
